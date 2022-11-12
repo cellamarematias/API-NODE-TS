@@ -13,10 +13,10 @@ export const getSavings = async (req, res) => {
 };
 
 export const createSaving = async (req, res) => {
-    const {moneda, monto, id_usuario } = req.body;
+    const {moneda, monto, id_usuario, date } = req.body;
 
     try {
-        const [rows] = await pool.query('INSERT INTO ahorros (moneda, monto, id_usuario) VALUES (?, ?, ?)', [moneda, monto, id_usuario]);
+        const [rows] = await pool.query('INSERT INTO ahorros (moneda, monto, id_usuario, date) VALUES (?, ?, ?, ?)', [moneda, monto, id_usuario, date]);
         res.send({
             id: rows.insertId,
             moneda,
@@ -33,10 +33,10 @@ export const createSaving = async (req, res) => {
 
 export const updateSaving = async (req, res) => {
 	const { id } = req.params;
-	const { moneda, monto, id_usuario } = req.body;
+	const { moneda, monto, id_usuario, date } = req.body;
 
 	try {
-		const [result] = await pool.query('UPDATE ahorros SET moneda = IFNULL(?, moneda), monto = IFNULL(?, monto), id_usuario = IFNULL(?, id_usuario) WHERE idahorros = ?', [moneda, monto, id_usuario, id]);
+		const [result] = await pool.query('UPDATE ahorros SET moneda = IFNULL(?, moneda), monto = IFNULL(?, monto), id_usuario = IFNULL(?, id_usuario), date = IFNULL(?, date) WHERE idahorros = ?', [moneda, monto, id_usuario, id, date]);
 		if (result.affectedRows === 0) return res.status(404).json({
 			message: 'Saving not found'
 		})
