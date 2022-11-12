@@ -21,7 +21,8 @@ export const createSaving = async (req, res) => {
             id: rows.insertId,
             moneda,
             monto,
-            id_usuario
+            id_usuario,
+			date
         });
 	} catch (error) {
 		return res.status(500).json({
