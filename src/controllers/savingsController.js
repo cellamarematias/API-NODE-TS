@@ -1,9 +1,9 @@
 import { pool } from "../db.js";
 
 
-export const getExpenses = async (req, res) => {
+export const getSavings = async (req, res) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM gastos');
+        const [rows] = await pool.query('SELECT * FROM ahorros');
         res.send(rows);
 	} catch (error) {
 		return res.status(500).json({
@@ -12,17 +12,17 @@ export const getExpenses = async (req, res) => {
 	}
 };
 
-export const createExpense = async (req, res) => {
-    const {descripcion, monto, id_usuario, date, total } = req.body;
-	console.log(req.body)
+export const createSaving = async (req, res) => {
+    const {moneda, monto, id_usuario, date } = req.body;
 
     try {
-        const [rows] = await pool.query('INSERT INTO gastos (descripcion, monto, id_usuario, date, total) VALUES (?, ?, ?, ?, ?)', [descripcion, monto, id_usuario, date, total]);
+        const [rows] = await pool.query('INSERT INTO ahorros (moneda, monto, id_usuario, date) VALUES (?, ?, ?, ?)', [moneda, monto, id_usuario, date]);
         res.send({
             id: rows.insertId,
-            descripcion,
+            moneda,
             monto,
-            id_usuario
+            id_usuario,
+			date
         });
 	} catch (error) {
 		return res.status(500).json({
@@ -32,34 +32,36 @@ export const createExpense = async (req, res) => {
 };
 
 
-export const updateExpense = async (req, res) => {
+export const updateSaving = async (req, res) => {
 	const { id } = req.params;
-	const { descripcion, monto, id_usuario } = req.body;
+	const { moneda, monto, id_usuario, date } = req.body;
+
+	console.log(id)
 
 	try {
-		const [result] = await pool.query('UPDATE gastos SET descripcion = IFNULL(?, descripcion), monto = IFNULL(?, monto), id_usuario = IFNULL(?, id_usuario) WHERE idgastos = ?', [descripcion, monto, id_usuario, id]);
+		const [result] = await pool.query('UPDATE ahorros SET moneda = IFNULL(?, moneda), monto = IFNULL(?, monto), id_usuario = IFNULL(?, id_usuario), date = IFNULL(?, date) WHERE idahorros = ?', [moneda, monto, id_usuario, date, id ]);
 		if (result.affectedRows === 0) return res.status(404).json({
-			message: 'Expense not found'
+			message: 'Saving not found'
 		})
-		const [rows] = await pool.query('SELECT * FROM gastos WHERE idgastos = ?', [id]);
+		const [rows] = await pool.query('SELECT * FROM ahorros WHERE idahorros = ?', [id]);
 		res.send(rows[0]);
 	} catch (error) {
 		return res.status(500).json({
-			message: 'Expense not found'
+			message: 'Saving not found'
 		})
 	}
 };
 
-export const deleteExpense = async (req, res) => {
+export const deleteSaving = async (req, res) => {
 	try {
-		const [result] = await pool.query('DELETE FROM gastos WHERE idgastos = ?', [req.params.id]);
+		const [result] = await pool.query('DELETE FROM ahorros WHERE idahorros = ?', [req.params.id]);
 		if (result.affectedRows <= 0) return res.status(404).json({
-			message: 'Expense not found'
+			message: 'Saving not found'
 		})
 		res.sendStatus(204);
 	} catch (error) {
 		return res.status(500).json({
-			message: 'Expense not found'
+			message: 'Saving not found'
 		})
 	}
 
