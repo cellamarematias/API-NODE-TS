@@ -1,5 +1,6 @@
 import { pool } from "../db.js";
-
+import jsonwebtoken from 'jsonwebtoken';
+const { sign, decode, verify } = jsonwebtoken;
 
 export const getTask = async (req, res) => {
     try {

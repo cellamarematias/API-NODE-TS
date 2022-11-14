@@ -21,7 +21,8 @@ export const createSaving = async (req, res) => {
             id: rows.insertId,
             moneda,
             monto,
-            id_usuario
+            id_usuario,
+			date
         });
 	} catch (error) {
 		return res.status(500).json({
@@ -35,8 +36,10 @@ export const updateSaving = async (req, res) => {
 	const { id } = req.params;
 	const { moneda, monto, id_usuario, date } = req.body;
 
+	console.log(id)
+
 	try {
-		const [result] = await pool.query('UPDATE ahorros SET moneda = IFNULL(?, moneda), monto = IFNULL(?, monto), id_usuario = IFNULL(?, id_usuario), date = IFNULL(?, date) WHERE idahorros = ?', [moneda, monto, id_usuario, id, date]);
+		const [result] = await pool.query('UPDATE ahorros SET moneda = IFNULL(?, moneda), monto = IFNULL(?, monto), id_usuario = IFNULL(?, id_usuario), date = IFNULL(?, date) WHERE idahorros = ?', [moneda, monto, id_usuario, date, id ]);
 		if (result.affectedRows === 0) return res.status(404).json({
 			message: 'Saving not found'
 		})
