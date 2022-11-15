@@ -1,4 +1,6 @@
 import { pool } from "../db.js";
+import jsonwebtoken from 'jsonwebtoken';
+const { sign, decode, verify } = jsonwebtoken;
 
 export const getUsers = async (req, res) => {
 	try {
@@ -78,9 +80,9 @@ export const deleteUser = async (req, res) => {
 
 export const authUser = async (req, res) => {
 	const { usuario, password } = req.body;
-
-	console.log(req.body);
-
+	const token = jsonwebtoken.sign({ id: usuario }, process.env.JWT_SECRET, {
+		// expiresIn: process.env.JWT_EXPIRES_IN,
+	  });
 	try {
 		const [rows] = await pool.query('SELECT * FROM usuario WHERE usuario = ? AND password = ?', [ usuario, password ]);
 		if (rows.length <= 0) return res.status(404).json({
@@ -90,7 +92,8 @@ export const authUser = async (req, res) => {
 		res.status(200).json({
 			user: usuario,
 			message: 'Authorized',
-			authorized: true
+			authorized: true,
+			token
 		})
 	} catch (error) {
 		return res.status(500).json({
