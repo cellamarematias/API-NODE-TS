@@ -1,23 +1,16 @@
-import firebaseApp from "../helper/firebase.js";
+import jwt from 'jsonwebtoken';
+const { sign, decode, verify } = jwt;
 
 const authMiddleware = (req, res, next) => {
-  const { token } = req.headers;
-  if (req.path === '/register') {
-    next();
+  const token = req.header('auth-token');
+  if (!token) return res.status(401).json({ error: 'Acceso denegado' })
+  try {
+      const verified = jwt.verify(token, process.env.JWT_SECRET)
+      next() // continuamos
+  } catch (error) {
+      res.status(400).json({error: 'token no es válido'})
   }
-  if (!token) {
-    return res.status(400).json({ message: 'Authentication failed' });
-  }
-  return firebase
-    .auth()
-    .verifyIdToken(token)
-    .then((response) => {
-      req.firebaseUid = response.uid;
-      next();
-    })
-    .catch((error) => {
-      res.status(401).json({ message: error.toString() });
-    });
+
 };
 
 export default authMiddleware;

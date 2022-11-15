@@ -4,9 +4,9 @@ import authMiddleware from "../middlewares/validations.js";
 
 const router = Router();
 
-router.get("/expenses", getExpenses)
-router.post("/expenses", createExpense);
-router.patch("/expenses/:id", updateExpense);
-router.delete("/expenses/:id", deleteExpense);
+router.get("/expenses", authMiddleware, getExpenses)
+router.post("/expenses", authMiddleware, createExpense);
+router.patch("/expenses/:id", authMiddleware, updateExpense);
+router.delete("/expenses/:id", authMiddleware, deleteExpense);
 
 export default router;

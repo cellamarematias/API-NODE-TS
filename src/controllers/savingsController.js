@@ -22,7 +22,7 @@ export const createSaving = async (req, res) => {
             moneda,
             monto,
             id_usuario,
-			date
+						date
         });
 	} catch (error) {
 		return res.status(500).json({
