@@ -34,10 +34,10 @@ export const createExpense = async (req, res) => {
 
 export const updateExpense = async (req, res) => {
 	const { id } = req.params;
-	const { descripcion, monto, id_usuario } = req.body;
+	const { descripcion, monto, date, id_usuario } = req.body;
 
 	try {
-		const [result] = await pool.query('UPDATE gastos SET descripcion = IFNULL(?, descripcion), monto = IFNULL(?, monto), id_usuario = IFNULL(?, id_usuario) WHERE idgastos = ?', [descripcion, monto, id_usuario, id]);
+		const [result] = await pool.query('UPDATE gastos SET descripcion = IFNULL(?, descripcion), monto = IFNULL(?, monto), date = IFNULL(?, date), id_usuario = IFNULL(?, id_usuario) WHERE idgastos = ?', [descripcion, monto, date, id_usuario, id]);
 		if (result.affectedRows === 0) return res.status(404).json({
 			message: 'Expense not found'
 		})
