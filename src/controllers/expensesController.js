@@ -3,7 +3,7 @@ import { pool } from "../db.js";
 
 export const getExpenses = async (req, res) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM gastos');
+        const [rows] = await pool.query('SELECT * FROM gastos ORDER BY date DESC LIMIT 50');
         res.send(rows);
 	} catch (error) {
 		return res.status(500).json({
