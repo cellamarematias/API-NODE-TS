@@ -80,7 +80,6 @@ export const deleteUser = async (req, res) => {
 
 export const authUser = async (req, res) => {
 	const { usuario, password } = req.body;
-	
 	const token = jsonwebtoken.sign({ id: usuario }, process.env.JWT_SECRET, {
 		// expiresIn: process.env.JWT_EXPIRES_IN,
 	  });
