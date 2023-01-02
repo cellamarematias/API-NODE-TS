@@ -50,6 +50,21 @@ export const updateExpense = async (req, res) => {
 	}
 };
 
+export const balance = async (req, res) => {
+	try {
+		const [result] = await pool.query('UPDATE gastos SET pagado = true');
+		if (result.affectedRows === 0) return res.status(404).json({
+			message: 'Expense not found'
+		})
+		const [rows] = await pool.query('SELECT * FROM gastos');
+		res.send(rows);
+	} catch (error) {
+		return res.status(500).json({
+			message: 'Expense not found'
+		})
+	}
+};
+
 export const deleteExpense = async (req, res) => {
 	try {
 		const [result] = await pool.query('DELETE FROM gastos WHERE idgastos = ?', [req.params.id]);
