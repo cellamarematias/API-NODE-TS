@@ -13,7 +13,7 @@ export const DB_PORT= process.env.DB_PORT;
 // Firebase
 
 
-export const GOOGLE_APPLICATION_CREDENTIALS = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+// export const GOOGLE_APPLICATION_CREDENTIALS = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
 
 

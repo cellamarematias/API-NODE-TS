@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getSavings, createSaving, updateSaving, deleteSaving } from "../controllers/savingsController.js";
+import { getSavings, createSaving, updateSaving, deleteSaving } from "../controllers/savingsController";
 import authMiddleware from "../middlewares/validations.js";
 
 const router = Router();
